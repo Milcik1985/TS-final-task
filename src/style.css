@@ -1,0 +1,51 @@
+header {
+  background-image: url("../Images/tropical-jungle-1.jpg");
+  min-height: 10rem;
+
+  h1 {
+    padding-top: 3rem;
+    color: white;
+    text-align: center;
+    margin: 0;
+  }
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(197, 235, 170, 1) 0%,
+    rgba(217, 237, 191, 1) 50%,
+    rgba(245, 247, 248, 1) 100%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.add-buttons-conatiner {
+  display: flex;
+  justify-content: center;
+  margin: 5rem;
+  gap: 1rem;
+}
+
+.btn {
+  min-width: 15%;
+  border-radius: 20px;
+  padding: 5px 10px;
+  background-color: #c5ebaa;
+  font-weight: bold;
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+    rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+    rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+#form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+input {
+  min-width: 20%;
+}
