@@ -238,12 +238,17 @@ addAnimalButton.addEventListener("click", () => {
 
   formContainer.append(animalNameInput);
   formContainer.append(animalAgeInput);
-  formContainer.append(labelForSleepingAndWalking);
-  formContainer.append(sleepingAndWalkingCheckbox);
-  formContainer.append(labelForSwimmingAndHunting);
-  formContainer.append(swimmingAndHuntingCheckbox);
-  formContainer.append(labelForJumpingAndRunning);
-  formContainer.append(jumppingAndRunningCheckbox);
+
+  const checkboxContainer = document.createElement("div") as HTMLDivElement;
+  checkboxContainer.classList.add("checkbox-container");
+  formContainer.append(checkboxContainer);
+
+  checkboxContainer.append(sleepingAndWalkingCheckbox);
+  checkboxContainer.append(labelForSleepingAndWalking);
+  checkboxContainer.append(swimmingAndHuntingCheckbox);
+  checkboxContainer.append(labelForSwimmingAndHunting);
+  checkboxContainer.append(jumppingAndRunningCheckbox);
+  checkboxContainer.append(labelForJumpingAndRunning);
 
   const submitButton = document.createElement("button") as HTMLButtonElement;
   submitButton.textContent = "SUBMIT";
@@ -268,14 +273,37 @@ addAnimalButton.addEventListener("click", () => {
     animalAgeInfo.innerText = `Age: ${animalAgeInput.value}`;
     infoContainer.append(animalAgeInfo);
 
+    let newAnimal;
+
+    const sleepingAndWalkingChecked = sleepingAndWalkingCheckbox.checked;
+    const swimmingAndHuntingChecked = swimmingAndHuntingCheckbox.checked;
+    const jumpingAndRunningChecked = jumppingAndRunningCheckbox.checked;
+
+    if (sleepingAndWalkingChecked) {
+      newAnimal = new SleepingAndWalkingAnimal(
+        animalNameInput.value,
+        animalAgeInput.value
+      );
+    } else if (swimmingAndHuntingChecked) {
+      newAnimal = new SwimmingAndHuntingAnimal(
+        animalNameInput.value,
+        animalAgeInput.value
+      );
+    } else if (jumpingAndRunningChecked) {
+      newAnimal = new JumpingAndRunningAnimal(
+        animalNameInput.value,
+        animalAgeInput.value
+      );
+    } else {
+      newAnimal = new Animal(animalNameInput.value, animalAgeInput.value);
+    }
+
     if (!document.querySelector(".message")) {
       const messageWrapper = document.createElement("div") as HTMLDivElement;
       messageWrapper.classList.add("message");
       messageWrapper.innerText = "This Data Was Successfully Added:";
       formContainer.append(messageWrapper);
     }
-
-    const newAnimal = new Animal(animalNameInput.value, animalAgeInput.value);
 
     allAnimals.addAnimal(newAnimal);
     console.log(allAnimals.getAnimals());
