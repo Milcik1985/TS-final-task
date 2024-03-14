@@ -9,7 +9,7 @@ import {
   Animals,
 } from "./Animal.ts";
 
-import { Employee, Employees } from "./Employee.ts";
+import { Employees } from "./Employee.ts";
 
 import { ZooKeeper } from "./Employee.ts";
 
@@ -70,6 +70,15 @@ const addEmployeeButton = document.getElementById(
 const formContainer = document.getElementById(
   "form-container"
 ) as HTMLDivElement;
+
+const saveEmployeesToLocalStorage = (employees) => {
+  localStorage.setItem("employees", JSON.stringify(employees));
+};
+
+const getEmployeesFromLocalStorage = () => {
+  const employeesString = localStorage.getItem("employees");
+  return employeesString ? JSON.parse(employeesString) : [];
+};
 
 addEmployeeButton.addEventListener("click", () => {
   const nameInput = document.createElement("input") as HTMLInputElement;
@@ -168,5 +177,8 @@ addEmployeeButton.addEventListener("click", () => {
     nameInput.value = "";
     isAtTheZooInput.value = "";
     safetyTrainingDate.value = "";
+
+    saveEmployeesToLocalStorage(allEmployees.getEmployees());
   });
 });
+console.log(getEmployeesFromLocalStorage());
