@@ -30,7 +30,7 @@ body {
 }
 
 .btn {
-  min-width: 15%;
+  min-width: 20%;
   border-radius: 20px;
   padding: 5px 10px;
   background-color: #c5ebaa;
@@ -76,4 +76,11 @@ input {
 .checkbox-container {
   display: grid;
   grid-template-columns: 0.2fr 1fr;
+}
+
+#list-of-all-animals,
+#list-of-all-employees {
+  line-height: 2rem;
+  font-weight: bold;
+  text-align: center;
 }

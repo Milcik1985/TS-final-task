@@ -9,7 +9,7 @@ import {
   Animals,
 } from "./Animal.ts";
 
-import { Employees } from "./Employee.ts";
+import { Employee, Employees } from "./Employee.ts";
 
 import { ZooKeeper } from "./Employee.ts";
 
@@ -81,6 +81,10 @@ const getEmployeesFromLocalStorage = () => {
 };
 
 addEmployeeButton.addEventListener("click", () => {
+  formContainer.innerHTML = "";
+  containerWrapper.innerHTML = "";
+  animalsContainer.innerHTML = "";
+  employeesContainer.innerHTML = "";
   const nameInput = document.createElement("input") as HTMLInputElement;
   nameInput.placeholder = "Employee Name";
   nameInput.type = "text";
@@ -188,15 +192,31 @@ const addAnimalButton = document.getElementById(
 ) as HTMLButtonElement;
 
 const saveAnimalToLocalStorage = (animals) => {
-  localStorage.setItem("animals", JSON.stringify(animals));
+  const plainAnimals = animals.map((animal) => ({
+    name: animal.name,
+    age: animal.age,
+  }));
+  localStorage.setItem("animals", JSON.stringify(plainAnimals));
 };
 
 const getAnimalsFromLocalStorage = () => {
   const animalsString = localStorage.getItem("animals");
-  return animalsString ? JSON.parse(animalsString) : [];
+  if (animalsString) {
+    const plainAnimals = JSON.parse(animalsString);
+    return plainAnimals.map((animal) => new Animal(animal.name, animal.age));
+  }
+  return [];
 };
 
+const containerWrapper = document.getElementById(
+  "container-wrapper"
+) as HTMLDivElement;
+
 addAnimalButton.addEventListener("click", () => {
+  formContainer.innerHTML = "";
+  containerWrapper.innerHTML = "";
+  animalsContainer.innerHTML = "";
+  employeesContainer.innerHTML = "";
   const animalNameInput = document.createElement("input") as HTMLInputElement;
   animalNameInput.placeholder = "Animal Name";
   animalNameInput.type = "text";
@@ -262,9 +282,7 @@ addAnimalButton.addEventListener("click", () => {
     }
     const infoContainer = document.createElement("div") as HTMLDivElement;
     infoContainer.classList.add("container");
-    const containerWrapper = document.getElementById(
-      "container-wrapper"
-    ) as HTMLDivElement;
+
     containerWrapper.append(infoContainer);
     const animalNameInfo = document.createElement("div");
     animalNameInfo.innerText = animalNameInput.value;
@@ -279,23 +297,22 @@ addAnimalButton.addEventListener("click", () => {
     const swimmingAndHuntingChecked = swimmingAndHuntingCheckbox.checked;
     const jumpingAndRunningChecked = jumppingAndRunningCheckbox.checked;
 
+    const animalAge = parseInt(animalAgeInput.value);
+
     if (sleepingAndWalkingChecked) {
       newAnimal = new SleepingAndWalkingAnimal(
         animalNameInput.value,
-        animalAgeInput.value
+        animalAge
       );
     } else if (swimmingAndHuntingChecked) {
       newAnimal = new SwimmingAndHuntingAnimal(
         animalNameInput.value,
-        animalAgeInput.value
+        animalAge
       );
     } else if (jumpingAndRunningChecked) {
-      newAnimal = new JumpingAndRunningAnimal(
-        animalNameInput.value,
-        animalAgeInput.value
-      );
+      newAnimal = new JumpingAndRunningAnimal(animalNameInput.value, animalAge);
     } else {
-      newAnimal = new Animal(animalNameInput.value, animalAgeInput.value);
+      newAnimal = new Animal(animalNameInput.value, animalAge);
     }
 
     if (!document.querySelector(".message")) {
@@ -314,3 +331,78 @@ addAnimalButton.addEventListener("click", () => {
     saveAnimalToLocalStorage(allAnimals.getAnimals());
   });
 });
+
+console.log(getAnimalsFromLocalStorage());
+
+const listOfAnimals: Animal[] = [];
+const animalsContainer = document.getElementById(
+  "list-of-all-animals"
+) as HTMLDivElement;
+
+const showAllAnimalsButton = document.getElementById(
+  "get-all-animals"
+) as HTMLButtonElement;
+
+function clearContainer() {
+  containerWrapper.innerHTML = "";
+  formContainer.innerHTML = "";
+  animalsContainer.innerHTML = "";
+  employeesContainer.innerHTML = "";
+}
+
+function showAllAnimals() {
+  animalsContainer.innerHTML = "";
+
+  const animalsString = localStorage.getItem("animals");
+  if (animalsString) {
+    const animals = JSON.parse(animalsString);
+    animals.forEach((animal) => {
+      const animalDiv = document.createElement("div") as HTMLDivElement;
+      animalDiv.textContent = `${animal.name}, Age: ${animal.age}`;
+      animalsContainer.append(animalDiv);
+    });
+  }
+}
+
+showAllAnimalsButton.addEventListener("click", () => {
+  clearContainer();
+  showAllAnimals();
+});
+console.log(listOfAnimals);
+
+const listOfEmployees: Employee[] = [];
+const employeesContainer = document.getElementById(
+  "list-of-all-employees"
+) as HTMLDivElement;
+
+const showAllEmployeesButton = document.getElementById(
+  "get-all-employees"
+) as HTMLButtonElement;
+
+// function clearContainer() {
+//   containerWrapper.innerHTML = "";
+//   formContainer.innerHTML = "";
+// }
+
+function showAllEmployees() {
+  employeesContainer.innerHTML = "";
+
+  const employeesString = localStorage.getItem("employees");
+  if (employeesString) {
+    const employees = JSON.parse(employeesString);
+    employees.forEach((employee) => {
+      const employeeDiv = document.createElement("div") as HTMLDivElement;
+      let isAtTheZooText = employee.isEmployeeAtZoo
+        ? "Employee is at the Zoo"
+        : "Employee is not at the Zoo";
+      employeeDiv.textContent = `${employee.employeeName}, ${isAtTheZooText}, Safety Training End Date: ${employee.safetyTrainingCompletionDate}`;
+      employeesContainer.append(employeeDiv);
+    });
+  }
+}
+
+showAllEmployeesButton.addEventListener("click", () => {
+  clearContainer();
+  showAllEmployees();
+});
+console.log(listOfEmployees);
