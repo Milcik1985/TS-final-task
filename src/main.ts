@@ -13,6 +13,10 @@ import { Employee, Employees } from "./Employee.ts";
 
 import { ZooKeeper } from "./Employee.ts";
 
+import { Logger } from "./Logger.ts";
+
+const logger = Logger.getInstance();
+
 const giraffe = new Animal("Giraffe", 1);
 
 const cheetah = new JumpingAndRunningAnimal("Cheetah", 5);
@@ -71,7 +75,7 @@ const formContainer = document.getElementById(
   "form-container"
 ) as HTMLDivElement;
 
-const saveEmployeesToLocalStorage = (employees) => {
+const saveEmployeesToLocalStorage = (employees: Employee[]) => {
   localStorage.setItem("employees", JSON.stringify(employees));
 };
 
@@ -81,6 +85,7 @@ const getEmployeesFromLocalStorage = () => {
 };
 
 addEmployeeButton.addEventListener("click", () => {
+  logger.log("Employee Button is clicked");
   formContainer.innerHTML = "";
   containerWrapper.innerHTML = "";
   animalsContainer.innerHTML = "";
@@ -191,7 +196,7 @@ const addAnimalButton = document.getElementById(
   "add-animal"
 ) as HTMLButtonElement;
 
-const saveAnimalToLocalStorage = (animals) => {
+const saveAnimalToLocalStorage = (animals: Animal[]) => {
   const plainAnimals = animals.map((animal) => ({
     name: animal.name,
     age: animal.age,
@@ -203,7 +208,10 @@ const getAnimalsFromLocalStorage = () => {
   const animalsString = localStorage.getItem("animals");
   if (animalsString) {
     const plainAnimals = JSON.parse(animalsString);
-    return plainAnimals.map((animal) => new Animal(animal.name, animal.age));
+    return plainAnimals.map(
+      (animal: { name: string; age: number }) =>
+        new Animal(animal.name, animal.age)
+    );
   }
   return [];
 };
@@ -213,6 +221,7 @@ const containerWrapper = document.getElementById(
 ) as HTMLDivElement;
 
 addAnimalButton.addEventListener("click", () => {
+  logger.log("Adding Animal Button is clicked");
   formContainer.innerHTML = "";
   containerWrapper.innerHTML = "";
   animalsContainer.innerHTML = "";
@@ -355,7 +364,7 @@ function showAllAnimals() {
 
   const animalsString = localStorage.getItem("animals");
   if (animalsString) {
-    const animals = JSON.parse(animalsString);
+    const animals: Animal[] = JSON.parse(animalsString);
     animals.forEach((animal) => {
       const animalDiv = document.createElement("div") as HTMLDivElement;
       animalDiv.textContent = `${animal.name}, Age: ${animal.age}`;
@@ -365,6 +374,7 @@ function showAllAnimals() {
 }
 
 showAllAnimalsButton.addEventListener("click", () => {
+  logger.log("Show All Animals Button is clicked");
   clearContainer();
   showAllAnimals();
 });
@@ -379,20 +389,15 @@ const showAllEmployeesButton = document.getElementById(
   "get-all-employees"
 ) as HTMLButtonElement;
 
-// function clearContainer() {
-//   containerWrapper.innerHTML = "";
-//   formContainer.innerHTML = "";
-// }
-
 function showAllEmployees() {
   employeesContainer.innerHTML = "";
 
   const employeesString = localStorage.getItem("employees");
   if (employeesString) {
-    const employees = JSON.parse(employeesString);
+    const employees: Employee[] = JSON.parse(employeesString);
     employees.forEach((employee) => {
       const employeeDiv = document.createElement("div") as HTMLDivElement;
-      let isAtTheZooText = employee.isEmployeeAtZoo
+      const isAtTheZooText = employee.isEmployeeAtZoo
         ? "Employee is at the Zoo"
         : "Employee is not at the Zoo";
       employeeDiv.textContent = `${employee.employeeName}, ${isAtTheZooText}, Safety Training End Date: ${employee.safetyTrainingCompletionDate}`;
@@ -402,6 +407,7 @@ function showAllEmployees() {
 }
 
 showAllEmployeesButton.addEventListener("click", () => {
+  logger.log("Show All Employees Button is clicked");
   clearContainer();
   showAllEmployees();
 });
