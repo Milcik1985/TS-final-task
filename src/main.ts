@@ -113,4 +113,60 @@ addEmployeeButton.addEventListener("click", () => {
   submitButton.textContent = "SUBMIT";
   submitButton.classList.add("btn");
   formContainer.append(submitButton);
+
+  submitButton.addEventListener("click", () => {
+    if (
+      nameInput.value === "" ||
+      isAtTheZooInput.value === "" ||
+      safetyTrainingDate.value === ""
+    ) {
+      alert("Please fill in all the fields!");
+      return;
+    }
+    const infoContainer = document.createElement("div") as HTMLDivElement;
+    infoContainer.classList.add("container");
+    const containerWrapper = document.getElementById(
+      "container-wrapper"
+    ) as HTMLDivElement;
+    containerWrapper.append(infoContainer);
+    const employeeNameInfo = document.createElement("div");
+    employeeNameInfo.innerText = nameInput.value;
+    infoContainer.append(employeeNameInfo);
+    const isAtZooInfo = document.createElement("div") as HTMLDivElement;
+    if (
+      isAtTheZooInput.options[isAtTheZooInput.selectedIndex].value === "true"
+    ) {
+      isAtZooInfo.innerText = "Employee is at the Zoo";
+    } else {
+      isAtZooInfo.innerText = "Employee is not at the Zoo";
+    }
+    isAtTheZooInput.value;
+    infoContainer.append(isAtZooInfo);
+    const safetyTrainingInfo = document.createElement("div") as HTMLDivElement;
+    safetyTrainingInfo.innerText = `Safety Trainings End Date: ${safetyTrainingDate.value}`;
+    infoContainer.append(safetyTrainingInfo);
+
+    if (!document.querySelector(".message")) {
+      const messageWrapper = document.createElement("div") as HTMLDivElement;
+      messageWrapper.classList.add("message");
+      messageWrapper.innerText = "This Data Was Successfully Added:";
+      formContainer.append(messageWrapper);
+    }
+
+    const isEmployeeAtZoo: boolean =
+      isAtTheZooInput.value === "true" || isAtTheZooInput.value === "false";
+
+    const newEmployee = new ZooKeeper(
+      nameInput.value,
+      isEmployeeAtZoo,
+      new Date(safetyTrainingDate.value)
+    );
+
+    allEmployees.addEmployee(newEmployee);
+    console.log(allEmployees.getEmployees());
+
+    nameInput.value = "";
+    isAtTheZooInput.value = "";
+    safetyTrainingDate.value = "";
+  });
 });
