@@ -182,3 +182,107 @@ addEmployeeButton.addEventListener("click", () => {
   });
 });
 console.log(getEmployeesFromLocalStorage());
+
+const addAnimalButton = document.getElementById(
+  "add-animal"
+) as HTMLButtonElement;
+
+const saveAnimalToLocalStorage = (animals) => {
+  localStorage.setItem("animals", JSON.stringify(animals));
+};
+
+const getAnimalsFromLocalStorage = () => {
+  const animalsString = localStorage.getItem("animals");
+  return animalsString ? JSON.parse(animalsString) : [];
+};
+
+addAnimalButton.addEventListener("click", () => {
+  const animalNameInput = document.createElement("input") as HTMLInputElement;
+  animalNameInput.placeholder = "Animal Name";
+  animalNameInput.type = "text";
+
+  const animalAgeInput = document.createElement("input") as HTMLInputElement;
+  animalAgeInput.placeholder = "Animal Age";
+  animalAgeInput.type = "number";
+  animalAgeInput.min = "1";
+  animalAgeInput.max = "100";
+  animalAgeInput.pattern = "[1-9][0-9]?|100";
+  animalAgeInput.title = "Please enter age between 1-100";
+
+  const sleepingAndWalkingCheckbox = document.createElement(
+    "input"
+  ) as HTMLInputElement;
+  sleepingAndWalkingCheckbox.type = "checkbox";
+  sleepingAndWalkingCheckbox.id = "sleeping-walking-checkbox";
+  const labelForSleepingAndWalking = document.createElement("label");
+  labelForSleepingAndWalking.textContent = "Sleeping and Walking Animal";
+  labelForSleepingAndWalking.setAttribute("for", "sleeping-walking-checkbox");
+
+  const swimmingAndHuntingCheckbox = document.createElement(
+    "input"
+  ) as HTMLInputElement;
+  swimmingAndHuntingCheckbox.type = "checkbox";
+  swimmingAndHuntingCheckbox.id = "swimming-hunting-checkbox";
+  const labelForSwimmingAndHunting = document.createElement("label");
+  labelForSwimmingAndHunting.textContent = "Swimming and Hunting Animal";
+  labelForSwimmingAndHunting.setAttribute("for", "swimming-hunting-checkbox");
+
+  const jumppingAndRunningCheckbox = document.createElement(
+    "input"
+  ) as HTMLInputElement;
+  jumppingAndRunningCheckbox.type = "checkbox";
+  jumppingAndRunningCheckbox.id = "jumping-running-checkbox";
+  const labelForJumpingAndRunning = document.createElement("label");
+  labelForJumpingAndRunning.textContent = "Jumping and Running Animal";
+  labelForJumpingAndRunning.setAttribute("for", "jumping-running-checkbox");
+
+  formContainer.append(animalNameInput);
+  formContainer.append(animalAgeInput);
+  formContainer.append(labelForSleepingAndWalking);
+  formContainer.append(sleepingAndWalkingCheckbox);
+  formContainer.append(labelForSwimmingAndHunting);
+  formContainer.append(swimmingAndHuntingCheckbox);
+  formContainer.append(labelForJumpingAndRunning);
+  formContainer.append(jumppingAndRunningCheckbox);
+
+  const submitButton = document.createElement("button") as HTMLButtonElement;
+  submitButton.textContent = "SUBMIT";
+  submitButton.classList.add("btn");
+  formContainer.append(submitButton);
+
+  submitButton.addEventListener("click", () => {
+    if (animalNameInput.value === "" || animalAgeInput.value === "") {
+      alert("Please fill in all the fields!");
+      return;
+    }
+    const infoContainer = document.createElement("div") as HTMLDivElement;
+    infoContainer.classList.add("container");
+    const containerWrapper = document.getElementById(
+      "container-wrapper"
+    ) as HTMLDivElement;
+    containerWrapper.append(infoContainer);
+    const animalNameInfo = document.createElement("div");
+    animalNameInfo.innerText = animalNameInput.value;
+    infoContainer.append(animalNameInfo);
+    const animalAgeInfo = document.createElement("div");
+    animalAgeInfo.innerText = `Age: ${animalAgeInput.value}`;
+    infoContainer.append(animalAgeInfo);
+
+    if (!document.querySelector(".message")) {
+      const messageWrapper = document.createElement("div") as HTMLDivElement;
+      messageWrapper.classList.add("message");
+      messageWrapper.innerText = "This Data Was Successfully Added:";
+      formContainer.append(messageWrapper);
+    }
+
+    const newAnimal = new Animal(animalNameInput.value, animalAgeInput.value);
+
+    allAnimals.addAnimal(newAnimal);
+    console.log(allAnimals.getAnimals());
+
+    animalNameInput.value = "";
+    animalAgeInput.value = "";
+
+    saveAnimalToLocalStorage(allAnimals.getAnimals());
+  });
+});
