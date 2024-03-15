@@ -137,9 +137,9 @@ addEmployeeButton.addEventListener("click", () => {
 
   submitButton.addEventListener("click", () => {
     if (
-      nameInput.value === "" ||
-      isAtTheZooInput.value === "" ||
-      safetyTrainingDate.value === ""
+      !nameInput.value ||
+      !isAtTheZooInput.value ||
+      !safetyTrainingDate.value
     ) {
       alert("Please fill in all the fields!");
       return;
