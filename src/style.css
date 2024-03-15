@@ -84,3 +84,7 @@ input {
   font-weight: bold;
   text-align: center;
 }
+
+.hippo {
+  max-height: 13rem;
+}
