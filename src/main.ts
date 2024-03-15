@@ -49,6 +49,9 @@ zookeeper.eneterZoo();
 zookeeper.leaveZoo();
 zookeeper.feedingAnimal("Tiger", "11:30");
 
+const zookeeper2 = new ZooKeeper("Mary", true, new Date("2024.03.21."));
+zookeeper2.feedingAnimal("Hippo", "10:15");
+
 const allEmployees = new Employees();
 
 allEmployees.addEmployee(zookeeper);
